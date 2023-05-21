@@ -1,10 +1,39 @@
+import {sql} from "@vercel/postgres"
+import { error } from "console";
 import { NextRequest, NextResponse } from "next/server";
+import {Todo,todoTable,db} from "@/lib/drizzle"
 
-export function GET(request:NextRequest){
-    return NextResponse.json ({"messgae":"Hello "})
+export async function GET(request:NextRequest){
+
+    try{
+        await sql`CREATE TABLE IF NOT EXISTS todos(ID serial,Task varchar(255))`;
+        const res=await db.select().from(todoTable);
+        
+        console.log(res[0].Task)
+        return NextResponse.json ({"DATA":res})
+    }
+    catch(err){
+        console.log((err as {message:string}).message)
+        return new NextResponse("something went wrong")
+    }
+    
 }
 
 
-export function PUT(request:NextRequest){
-    const res= request.json()    
+export async function PUT(request:NextRequest){
+    const req= await request.json()    //Data received in request will be store in variable "req"
+
+    try {
+        
+        if(req.task){
+            const res=await db.insert(todoTable).values({
+                Task:req.task
+            }).returning();
+            return NextResponse.json({"message":"Task added successfully"});
+        }else{
+            throw new Error ("Task is required") 
+        }
+    } catch (error) { //catch "error" which is thrown by  "throw new Error"
+        return NextResponse.json({"messagee":(error as{message:string}).message})   //return "Task is required"     
+    }
 }
