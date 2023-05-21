@@ -9,7 +9,7 @@ export async function GET(request:NextRequest){
         await sql`CREATE TABLE IF NOT EXISTS todos(ID serial,Task varchar(255))`;
         const res=await db.select().from(todoTable);
         
-        console.log(res[0].Task)
+        // console.log(res[0].Task)
         return NextResponse.json ({"DATA":res})
     }
     catch(err){
