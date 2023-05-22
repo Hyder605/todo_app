@@ -29,6 +29,7 @@ export async function PUT(request:NextRequest){
             const res=await db.insert(todoTable).values({
                 Task:req.task
             }).returning();
+            console.log(res)
             return NextResponse.json({"message":"Task added successfully"});
         }else{
             throw new Error ("Task is required") 
