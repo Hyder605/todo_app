@@ -1,7 +1,7 @@
 'use client'
 
-import { AddTodo } from "@/components/addtodo";
-import { getData, TodoList } from "@/components/todolist";
+import {AddTodo } from "@/components/addtodo";
+import { TodoList } from "@/components/todolist";
 
 
 

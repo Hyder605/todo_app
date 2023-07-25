@@ -6,28 +6,36 @@ import { useState } from "react";
 
 
 
-export async function AddTodo() {
-    const [task, setTask] = useState<newTodo|null>(null)
-    const {refresh}=useRouter()
-    const handleSubmit=async()=>{
-        const res=await fetch('https://purple-psychiatrist-vzwgu.ineuron.app:3000/api/todo',{
-            method:"POST",
-            body: JSON.stringify({
-                Task: task?.Task          
-            })
-        })
-        // refresh the list 
-        refresh(); 
+export function AddTodo() {
+    const [Task, setTask] = useState<newTodo | null>(null)
+    const { refresh } = useRouter()
+    const handleSubmit = async () => {
+        try {
+            if (Task) {
+                const res = await fetch("/api/todo", {
+                    method: "POST",
+                    body: JSON.stringify({
+                        task: Task.Task
+                    }),
 
+                })
+                refresh();
+            }
+        } catch (error) {
+            console.log("error")
+        }
 
     }
     return (
         <div>
-            <form>
-                <input onChange={(e)=>setTask({"Task":e.target.value})} type={"text"} className="focus:outline-none"/>
-                <button onClick={handleSubmit} type="button" className="px-4 border rounded-2xl">Add</button>
+            <form className='w-full flex gap-x-3'>
+                <input
+                    onChange={(e) => setTask({ Task: e.target.value })}
+                    className='rounded-full w-full py-3.5 px-5 border focus:outline-secondary' type="text" />
+                <button type='button' onClick={handleSubmit} className='p-4 shrink-0 rounded-full bg-gradient-to-b from-primary to-secondary' >
+                    ADD            </button>
             </form>
-
         </div>
     )
 }
+

@@ -5,7 +5,7 @@ import { sql } from '@vercel/postgres';
 
 //Creating the structure of the table we made in databse
 export const todoTable=pgTable("todos",{
-    Id:serial("id").primaryKey(),
+    ID:serial("id").primaryKey(),
     Task:varchar("task",{length:255}).notNull()
 })
 
